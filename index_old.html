@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minecraft 新手指引</title>
+<style>
+  :root{
+    --grass:#5fbf3f; --grass-dark:#3f8f2a; --dirt:#8b5a2b; --dirt-dark:#6b4423;
+    --stone:#a0a0a0; --plank:#9c6d3f; --emerald:#17dd62; --emerald-dark:#0fa94c;
+    --ink:#1e1e1e; --paper:#f5efe0; --paper-dark:#e8dfc8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--paper);
+    background-image:repeating-linear-gradient(45deg,#0000 0 12px,#00000008 12px 24px);
+    color:var(--ink); line-height:1.65;
+  }
+  /* ========== 顶部标题 ========== */
+  header{
+    background:linear-gradient(180deg,var(--grass) 0 60%,var(--grass-dark) 60% 100%);
+    border-bottom:6px solid var(--dirt-dark);
+    padding:48px 16px 28px; text-align:center;
+    text-shadow:2px 2px 0 rgba(0,0,0,.35);
+  }
+  header h1{
+    color:#fff; font-size:clamp(26px,4vw,44px);
+    letter-spacing:2px; display:inline-block;
+    background:rgba(0,0,0,.25); padding:8px 24px;
+    border:4px solid #fff;
+    box-shadow:0 4px 0 rgba(0,0,0,.3);
+  }
+  header p{color:#fff;margin-top:10px;font-weight:600}
+
+  /* ========== 通用容器 ========== */
+  .wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+  section{padding:56px 0}
+  section h2{
+    font-size:clamp(20px,3vw,30px); text-align:center; margin-bottom:8px;
+    display:flex; align-items:center; justify-content:center; gap:12px;
+  }
+  section h2::before,section h2::after{
+    content:""; width:38px;height:6px;background:var(--grass-dark);
+  }
+  section .sub{text-align:center;color:#5c5347;margin-bottom:28px;font-size:14px}
+
+  /* ========== Hero 草方块 ========== */
+  .hero{padding:64px 0 24px;text-align:center}
+  .hero-img{
+    width:min(280px,60vw); image-rendering:pixelated;
+    border:6px solid var(--dirt-dark);
+    box-shadow:0 12px 0 rgba(0,0,0,.18), 0 0 0 0 rgba(95,191,63,.5);
+    cursor:pointer; user-select:none;
+    transition:transform .12s ease, box-shadow .25s ease, filter .25s ease;
+  }
+  .hero-img:hover{
+    filter:brightness(1.18) drop-shadow(0 0 18px rgba(140,255,120,.8));
+    box-shadow:0 14px 0 rgba(0,0,0,.18), 0 0 42px rgba(140,255,120,.55);
+  }
+  .hero-img:active{transform:scale(.92) translateY(4px)}
+  .hero-caption{margin-top:18px;color:#5c5347;font-size:14px}
+
+  /* ========== 三块卡片通用 ========== */
+  .grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+  .card{
+    background:var(--paper-dark);
+    border:4px solid var(--dirt-dark);
+    box-shadow:6px 6px 0 rgba(0,0,0,.18);
+    padding:22px 20px; position:relative;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .card:hover{transform:translateY(-4px);box-shadow:8px 10px 0 rgba(0,0,0,.22)}
+  .card .badge{
+    display:inline-block; background:var(--grass-dark); color:#fff;
+    padding:2px 12px; font-size:12px; font-weight:700; letter-spacing:1px;
+    border:2px solid #fff; box-shadow:0 3px 0 rgba(0,0,0,.25); margin-bottom:10px;
+  }
+  .card h3{font-size:18px;margin-bottom:8px;color:#2e2620}
+  .card p{font-size:14px;color:#4a4238}
+  .card ul{margin:8px 0 0 18px;font-size:14px;color:#4a4238}
+  .card li{margin-bottom:4px}
+
+  /* ========== 绿宝石按钮 ========== */
+  .emerald-zone{padding:32px 0 8px;text-align:center}
+  .emerald-btn{
+    font-size:20px; font-weight:900; letter-spacing:2px;
+    background:var(--emerald); color:#000;
+    border:4px solid var(--emerald-dark);
+    box-shadow:0 6px 0 var(--emerald-dark), 0 8px 14px rgba(0,0,0,.25);
+    padding:14px 40px; cursor:pointer; user-select:none;
+    transition:transform .1s ease, box-shadow .1s ease, filter .2s ease;
+    font-family:inherit;
+  }
+  .emerald-btn:hover{filter:brightness(1.12)}
+  .emerald-btn:active{
+    transform:translateY(5px);
+    box-shadow:0 1px 0 var(--emerald-dark), 0 2px 6px rgba(0,0,0,.2);
+  }
+  .emerald-zone .tip{margin-top:12px;font-size:13px;color:#5c5347}
+
+  /* ========== UUID 皮肤小工具 ========== */
+  .uuid-tool{
+    background:var(--paper-dark); border:4px solid var(--dirt-dark);
+    box-shadow:6px 6px 0 rgba(0,0,0,.18); padding:28px 22px;
+  }
+  .uuid-tool .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .uuid-tool input{
+    flex:1 1 320px; max-width:520px; font-size:16px; padding:12px 16px;
+    border:3px solid var(--dirt-dark); background:#fff;
+    font-family:Consolas,Menlo,monospace;
+  }
+  .uuid-tool input:focus{outline:none;border-color:var(--grass-dark);box-shadow:0 0 0 3px rgba(95,191,63,.3)}
+  .uuid-tool .go{
+    padding:12px 24px;font-size:16px;font-weight:700;cursor:pointer;
+    background:var(--grass-dark);color:#fff;border:3px solid #fff;
+    box-shadow:0 4px 0 rgba(0,0,0,.25);
+  }
+  .uuid-tool .hint{
+    margin-top:10px;text-align:center;font-size:13px;color:#7a6f5d;
+  }
+  .skin-result{
+    margin-top:22px;text-align:center;min-height:120px;
+  }
+  .skin-result img{
+    width:150px; image-rendering:pixelated;
+    border:4px solid var(--dirt-dark); background:#cfe8ff;
+    box-shadow:0 6px 0 rgba(0,0,0,.18);
+  }
+  .skin-result .uname{
+    margin-top:12px;font-weight:900;font-size:20px;letter-spacing:1px;
+    color:#2e2620;
+  }
+  .skin-result .uid{
+    font-family:Consolas,monospace;font-size:12px;color:#7a6f5d;margin-top:4px;
+  }
+  .skin-result .err{color:#c0392b;font-weight:700}
+  .spinner{
+    display:inline-block;width:34px;height:34px;
+    border:4px solid var(--grass-dark);border-top-color:transparent;
+    border-radius:50%;animation:spin .9s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ========== 绿宝石雨 ========== */
+  .emerald-drop{
+    position:fixed; top:-60px; pointer-events:none; z-index:9999;
+    width:34px; image-rendering:pixelated;
+    filter:drop-shadow(0 0 6px rgba(23,221,98,.6));
+    animation:fall linear forwards;
+  }
+  @keyframes fall{
+    to{transform:translateY(110vh) rotate(var(--rot,360deg));opacity:.95}
+  }
+
+  footer{
+    margin-top:40px;padding:22px 16px;text-align:center;
+    background:var(--dirt-dark);color:#f0e6d2;font-size:13px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Minecraft 新手指引</h1>
+  <p>从一个方块开始，建造属于你的世界</p>
+</header>
+
+<div class="wrap">
+
+  <!-- Hero 草方块 -->
+  <div class="hero">
+    <img class="hero-img" src="grass_block.png" alt="Minecraft 草方块"
+         draggable="false" oncontextmenu="return false">
+    <div class="hero-caption">👆 把鼠标放到方块上看看，再点一下试试</div>
+  </div>
+
+  <!-- 一、Minecraft 介绍 -->
+  <section id="intro">
+    <h2>Minecraft 介绍</h2>
+    <div class="sub">三个关键词，认识这块方块的世界</div>
+    <div class="grid">
+      <div class="card">
+        <span class="badge">01 · 基本信息</span>
+        <h3>什么是 Minecraft？</h3>
+        <p>一款由方块构成的第一人称沙盒游戏。玩家可以在随机生成的世界里采集、建造、合成、冒险，没有固定目标，玩法规则由你定义。</p>
+        <ul>
+          <li>首发年份：2009（公测），2011（正式版 1.0）</li>
+          <li>核心玩法：生存、创造、极限、多人联机</li>
+          <li>两大版本：Java 版（PC 生态最丰富）与基岩版（跨平台）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="badge">02 · 创始者</span>
+        <h3>Notch 与 Mojang</h3>
+        <p>瑞典程序员 <b>Markus "Notch" Persson</b> 于 2009 年发布了 Minecraft 的第一个公开版本，并随后创立工作室 Mojang（瑞典语"魔法盒"）。</p>
+        <ul>
+          <li>2014 年 Notch 将 Mojang 以约 25 亿美元出售给微软后离场</li>
+          <li>如今由 Mojang Studios（微软旗下）持续维护更新</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="badge">03 · 现状</span>
+        <h3>十余年热度不减</h3>
+        <p>Minecraft 是全球销量最高的电子游戏之一，累计销量超过 3 亿份，每月活跃玩家数以千万计。</p>
+        <ul>
+          <li>每年仍有大型版本更新（如"洞穴与高山""幽匿与诡异"）</li>
+          <li>拥有活跃的模组、材质、地图、服务器创作者生态</li>
+          <li>衍生作品包括 Minecraft Dungeons、Minecraft Legends 等</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 二、下载方式 -->
+  <section id="download">
+    <h2>Minecraft 下载方式</h2>
+    <div class="sub">选一款启动器，把游戏装进电脑</div>
+    <div class="grid">
+      <div class="card">
+        <span class="badge">01 · 官方启动器</span>
+        <h3>Minecraft Launcher</h3>
+        <p>由 Mojang / 微软官方提供，支持正版账号登录，可下载 Java 版与基岩版，整合了版本管理、皮肤更换与市场内容。</p>
+        <ul>
+          <li>优点：稳定、正版验证、直接购买/切换版本</li>
+          <li>适合：已有正版账号、追求原汁原味的玩家</li>
+          <li>获取：Minecraft 官网 minecraft.net 或微软商店</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="badge">02 · PCL2</span>
+        <h3>Plain Craft Launcher 2</h3>
+        <p>国内玩家 <b>龙腾猫跃（LTCatt）</b> 开发的开源启动器，界面现代、上手极快，支持版本隔离、模组/整合包一键安装、崩溃自动分析。</p>
+        <ul>
+          <li>仅支持 Windows（依赖 .NET Framework 4.5+）</li>
+          <li>内置国内加速下载，新手首选</li>
+          <li>获取：官方爱发电或 GitHub（Meloong-Git/PCL）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="badge">03 · HMCL</span>
+        <h3>Hello Minecraft! Launcher</h3>
+        <p>由开发者 <b>黄雨辉</b> 等维护的开源老牌启动器，用 Java 编写，<b>天然跨平台</b>（Windows / macOS / Linux）。</p>
+        <ul>
+          <li>支持的加载器最全：Forge、Fabric、Quilt、NeoForge、OptiFine、LiteLoader</li>
+          <li>整合包生态最强，可导入 CurseForge / Modrinth / MultiMC</li>
+          <li>适合：跨平台玩家、整合包与进阶模组玩家</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 三、新手教程 -->
+  <section id="tutorial">
+    <h2>Minecraft 新手教程</h2>
+    <div class="sub">第一天该做什么？记住这三步</div>
+    <div class="grid">
+      <div class="card">
+        <span class="badge">第一步</span>
+        <h3>撸树 · 合成 · 工具</h3>
+        <p>出生后第一件事：长按左键对准树干采集原木。按 <code>E</code> 打开背包，将原木变成木板，四块木板拼成<b>工作台</b>。</p>
+        <ul>
+          <li>木板 → 木棍 → 木镐 → 石镐</li>
+          <li>依次升级：木 → 石 → 铁 → 钻石 → 下界合金</li>
+          <li>前 10 分钟优先做出：镐、斧、剑、火把</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="badge">第二步</span>
+        <h3>安家 · 火把 · 床</h3>
+        <p>天黑会刷怪。在日落前用泥土/木板围一个小庇护所，插上火把（煤 + 木棍）照明，用三只羊的羊毛 + 三块木板做一张<b>床</b>。</p>
+        <ul>
+          <li>床可以跳过黑夜，并在死亡后作为重生点</li>
+          <li>门口放一扇门、留一个 1×1 的窗观察怪物</li>
+          <li>苦力怕爆炸是新手最常见的死因——小心绿色的家伙</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="badge">第三步</span>
+        <h3>挖矿 · 附魔 · 冒险</h3>
+        <p>往地下挖到 Y=-58 附近找<b>钻石</b>（1.18+ 版本），用铁镐开采。集齐装备后可以下地狱、进入末地挑战末影龙。</p>
+        <ul>
+          <li>附魔台（书 + 钻石×2 + 黑曜石×4）强化装备</li>
+          <li>铁傀儡 / 村民交易能快速获得资源</li>
+          <li>进阶：红石自动化、建筑、整合包、服务器</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 绿宝石按钮 -->
+  <div class="emerald-zone">
+    <button class="emerald-btn" id="emeraldBtn">💎 领取绿宝石</button>
+    <div class="tip">点一下，天上会掉绿宝石哦</div>
+  </div>
+
+  <!-- UUID 皮肤小工具 -->
+  <section id="uuid">
+    <h2>互动小工具</h2>
+    <div class="sub">输入正版 UUID，看看这个玩家的皮肤和名字</div>
+    <div class="uuid-tool">
+      <div class="row">
+        <input id="uuidInput" type="text" spellcheck="false" autocomplete="off"
+               placeholder="例如 069a79f4-44e9-4726-a5be-fca90e38aaf5（Notch）">
+        <button class="go" id="uuidGo">查询</button>
+      </div>
+      <div class="hint">输入 UUID（带或不带连字符均可，32 位十六进制）</div>
+
+      <div class="skin-result" id="skinResult">
+        <div style="color:#7a6f5d;font-size:14px">上方输入 UUID 后点击查询</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    本页面仅作学习演示 · 皮肤数据来自 Crafatar · 用户名数据来自 PlayerDB<span data-allow-html class='source-item source-aggregated' data-group-key='source-group-1' data-url='https://crafatar&#46;com/' data-id='turn0search0'><span data-allow-html class='source-item-num' data-group-key='source-group-1' data-id='turn0search0' data-url='https://crafatar&#46;com/'><span class='source-item-num-name' data-allow-html>crafatar.com</span><span data-allow-html class='source-item-num-count'>+1</span></span></span>
+  </footer>
+</div>
+
+<script>
+/* ============ 1. 草方块 Hero：长按收缩 ============ */
+const heroImg = document.querySelector('.hero-img');
+heroImg.addEventListener('mousedown', () => heroImg.style.transform = 'scale(.9) translateY(6px)');
+heroImg.addEventListener('mouseup',   () => heroImg.style.transform = '');
+heroImg.addEventListener('mouseleave',() => heroImg.style.transform = '');
+
+/* ============ 2. 绿宝石雨 ============ */
+const emeraldBtn = document.getElementById('emeraldBtn');
+emeraldBtn.addEventListener('click', spawnEmeraldRain);
+
+function spawnEmeraldRain(){
+  const N = 40;  // 一次生成的数量
+  for(let i=0;i<N;i++){
+    const img = document.createElement('img');
+    img.src = 'emerald.png';
+    img.className = 'emerald-drop';
+    const size = 22 + Math.random()*26;
+    img.style.width = size + 'px';
+    img.style.left = (Math.random()*100) + 'vw';
+    const dur = 2.2 + Math.random()*2.2;
+    img.style.animationDuration = dur + 's';
+    img.style.animationDelay = (Math.random()*0.8) + 's';
+    img.style.setProperty('--rot', (Math.random()*720 - 360) + 'deg');
+    document.body.appendChild(img);
+    setTimeout(()=>img.remove(), (dur+1)*1000);
+  }
+}
+
+/* ============ 3. UUID → 皮肤 + 用户名 ============ */
+const uuidInput = document.getElementById('uuidInput');
+const uuidGo    = document.getElementById('uuidGo');
+const skinBox   = document.getElementById('skinResult');
+
+uuidGo.addEventListener('click', queryUUID);
+uuidInput.addEventListener('keydown', e => { if(e.key==='Enter') queryUUID(); });
+
+function normalizeUUID(raw){
+  const clean = raw.trim().toLowerCase().replace(/-/g,'');
+  if(!/^[0-9a-f]{32}$/.test(clean)) return null;
+  return clean;
+}
+
+async function queryUUID(){
+  const raw = uuidInput.value;
+  const uuid = normalizeUUID(raw);
+  if(!uuid){
+    skinBox.innerHTML = '<div class="err">UUID 格式不对：请输入 32 位十六进制（带连字符也行）</div>';
+    return;
+  }
+  skinBox.innerHTML = '<div class="spinner"></div><div style="margin-top:10px;font-size:13px;color:#7a6f5d">正在向 Mojang 服务器请求…</div>';
+
+  const skinURL = 'https://crafatar.com/renders/body/' + uuid + '?overlay=true&scale=6';
+
+  // 同时请求用户名
+  try{
+    const res  = await fetch('https://playerdb.co/api/player/minecraft/' + uuid);
+    const json = await res.json();
+
+    if(json.code === 'player.found' && json.data?.player?.username){
+      const uname = json.data.player.username;
+      skinBox.innerHTML =
+        '<img src="' + skinURL + '" alt="皮肤">' +
+        '<div class="uname">' + escapeHTML(uname) + '</div>' +
+        '<div class="uid">' + formatUUID(uuid) + '</div>';
+    }else{
+      throw new Error(json.message || '未找到玩家');
+    }
+  }catch(err){
+    skinBox.innerHTML =
+      '<img src="' + skinURL + '" alt="皮肤" onerror="this.style.display=\'none\'">' +
+      '<div class="uname">（用户名获取失败）</div>' +
+      '<div class="uid">' + formatUUID(uuid) + '</div>' +
+      '<div class="err" style="margin-top:6px">' + escapeHTML(String(err.message||err)) + '</div>';
+  }
+}
+
+function formatUUID(u){
+  return u.slice(0,8)+'-'+u.slice(8,12)+'-'+u.slice(12,16)+'-'+u.slice(16,20)+'-'+u.slice(20);
+}
+function escapeHTML(s){
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+</script>
+</body>
+</html>
