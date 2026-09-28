@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minecraft · 钻石</title>
+<style>
+  :root {
+    --diamond: #4AEDD9;
+    --deep: #0b1f3a;
+    --deep2: #12315e;
+    --glow: rgba(74, 237, 217, .6);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Microsoft YaHei", sans-serif;
+    color: #eaf6ff;
+    background: linear-gradient(160deg, var(--deep) 0%, var(--deep2) 50%, #0d2447 100%);
+    min-height: 100vh;
+  }
+  .hero {
+    text-align: center;
+    padding: 70px 20px 40px;
+    background: radial-gradient(circle at 50% 30%, rgba(74,237,217,.15), transparent 60%);
+  }
+  .hero h1 {
+    font-size: 42px;
+    letter-spacing: 6px;
+    background: linear-gradient(90deg, #fff, var(--diamond), #7bdfff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p { color: #9fc8e8; margin-top: 14px; max-width: 640px; margin-inline: auto; line-height: 1.8; }
+  .hero .gem-img {
+    width: 90px;
+    margin: 20px auto 0;
+    display: block;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 18px var(--glow));
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  main { max-width: 900px; margin: 0 auto; padding: 20px; }
+  section {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(74,237,217,.25);
+    border-radius: 14px;
+    padding: 26px 30px;
+    margin-bottom: 24px;
+    box-shadow: 0 0 20px rgba(74,237,217,.08);
+    backdrop-filter: blur(4px);
+    transition: .3s;
+  }
+  section:hover { transform: translateY(-3px); box-shadow: 0 6px 28px rgba(74,237,217,.18); }
+  h2 {
+    color: var(--diamond);
+    font-size: 22px;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px dashed rgba(74,237,217,.3);
+    padding-bottom: 10px;
+  }
+  ul { padding-left: 22px; line-height: 2; color: #cfe8f7; }
+  li b { color: #fff; }
+  .tip { color: #7bdfff; font-size: 13px; margin-top: 10px; }
+  a { color: var(--diamond); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  footer { text-align: center; padding: 40px 20px 80px; }
+  #donateBtn {
+    font-size: 20px;
+    padding: 16px 48px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    color: #06263a;
+    font-weight: bold;
+    background: linear-gradient(90deg, var(--diamond), #7bdfff);
+    box-shadow: 0 0 25px var(--glow);
+    transition: .25s;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  #donateBtn img { width: 26px; image-rendering: pixelated; }
+  #donateBtn:hover { transform: scale(1.06); box-shadow: 0 0 45px var(--glow); }
+  .falling-gem {
+    position: fixed;
+    top: -70px;
+    pointer-events: none;
+    z-index: 999;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 8px var(--glow));
+    animation: fall linear forwards;
+  }
+  @keyframes fall {
+    to { transform: translateY(115vh) rotate(720deg); opacity: .9; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1> Minecraft · 钻石 </h1>
+  <p>钻石（Diamond）是 Minecraft 中最经典、最受欢迎的资源之一。它可以合成高级工具与盔甲、具有特殊功能的方块，甚至能复制锻造模板。挖到钻石的那一刻，永远是每个玩家最激动的回忆。</p>
+  <img class="gem-img" src="https://zh.minecraft.wiki/images/Diamond_JE3_BE3.png" alt="图片炸了">
+</div>
+
+<main>
+  <section>
+    <h2>⛏️ 挖矿获取</h2>
+    <ul>
+      <li><b>生成高度：</b>钻石矿石主要生成于 Y = -64 ~ 16 层，越深越多，<b>Y = -59 附近最为密集</b>。</li>
+      <li><b>挖掘工具：</b>必须使用<b>铁镐或更高级的镐</b>才能采集，否则不会掉落任何物品。</li>
+      <li><b>时运附魔：</b>使用时运 III 的镐每个矿石最多可掉落 4 颗钻石。</li>
+      <li><b>挖矿方式：</b>推荐"鱼骨挖矿法"或沿洞穴探索深层（深板岩层的裸露钻石矿）。</li>
+      <li><b>安全提示：</b>深层小心熔岩！随身携带水桶和足量火把。</li>
+    </ul>
+    <p class="tip">💡 小技巧：用"不挖Y=11的过时攻略"梗提醒老玩家更新知识（笑）。</p>
+  </section>
+
+  <section>
+    <h2>🎁 战利品箱子获取</h2>
+    <ul>
+      <li><b>沉船宝箱：</b>海洋探索的好去处，钻石出现概率较高。</li>
+      <li><b>要塞祭坛：</b>末地传送门附近的箱子中可能发现钻石。</li>
+      <li><b>村庄工具匠 / 武器匠箱子：</b>新人前期"白嫖"钻石的好来源。</li>
+      <li><b>丛林神庙、废弃矿井、古城：</b>均有概率生成含钻石的箱子。</li>
+      <li><b>末地城：</b>战利品丰富，是后期获取钻石的捷径之一。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>✨ 特殊用途</h2>
+    <ul>
+      <li><b>工具与盔甲：</b>合成钻石剑、镐、斧、护甲等，性能远超铁质装备。</li>
+      <li><b>附魔台：</b>合成附魔台需要 2 颗钻石 + 4 黑曜石 + 1 书。</li>
+      <li><b>唱片机：</b>8 木板 + 1 钻石，音乐与氛围感拉满。</li>
+      <li><b>锻造模板复制：</b>7 钻石 + 1 模板 + 1 对应方块，可复制锻造模板（下界合金升级必备）。</li>
+      <li><b>信标底座相关：</b>钻石块可作为信标底座材料，兼具储存与炫富功能。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>😆 大众玩梗</h2>
+    <ul>
+      <li><b>"钻石！钻石！"</b> —— 主播挖到钻石时的经典尖叫。</li>
+      <li><b>钻石剑 VS 苦力怕：</b>多少玩家的第一颗钻石献给了苦力怕的爆炸。</li>
+      <li><b>"我家后面挖到钻石了"</b> —— 经典开局玄学。</li>
+      <li><b>钻石镐耐久只剩1：</b>是修还是扔？玩家永远的纠结。</li>
+      <li><b>送钻石表达感谢：</b>MC 社区中，钻石早已成为"真诚与友谊"的象征，所以说——</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <p>参考：<a href="https://zh.minecraft.wiki/w/%E9%92%BB%E7%9F%B3" target="_blank">Minecraft Wiki · 钻石</a></p>
+  <br>
+  <button id="donateBtn">
+    <img src="https://zh.minecraft.wiki/images/Diamond_JE3_BE3.png" alt="图片炸了">
+    送博主钻石
+  </button>
+</footer>
+
+<script>
+  const GEM_URL = "https://zh.minecraft.wiki/images/Diamond_JE3_BE3.png";
+  const MAX_GEMS = 200;      // 页面上最多同时存在的下落钻石数
+  let activeGems = 0;        // 当前活跃数量计数器
+
+  function spawnGem() {
+    if (activeGems >= MAX_GEMS) return;   // 超过上限就不再生成
+    activeGems++;
+
+    const g = document.createElement('img');
+    g.className = 'falling-gem';
+    g.src = GEM_URL;
+    g.alt = '图片炸了';   // 加载失败时的回退文本
+    g.style.left = Math.random() * 100 + 'vw';
+    g.style.width = (24 + Math.random() * 46) + 'px';
+    g.style.animationDuration = (2 + Math.random() * 3) + 's';
+    g.style.animationDelay = (Math.random() * 1.5) + 's';
+    document.body.appendChild(g);
+
+    // 动画结束后回收元素并释放计数
+    const duration = parseFloat(g.style.animationDuration) + parseFloat(g.style.animationDelay);
+    setTimeout(() => {
+      g.remove();
+      activeGems--;
+    }, duration * 1000 + 100);
+  }
+
+  document.getElementById('donateBtn').addEventListener('click', () => {
+    // 每次点击尝试生成 80 颗，但总量不会超过 200
+    for (let i = 0; i < 80; i++) {
+      setTimeout(spawnGem, i * 20);   // 轻微错开生成，避免瞬间卡顿
+    }
+  });
+</script>
+</body>
+</html>

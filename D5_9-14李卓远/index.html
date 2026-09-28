@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minecraft 新手指引</title>
+<style>
+  :root{
+    --green:#7dd957; --green-deep:#1d6315;
+    --bg:#0e1a11; --card-line:rgba(125,217,87,.18);
+    --text:#e8f3e4; --muted:#9db8a0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(1100px 520px at 50% -8%, rgba(125,217,87,.14), transparent),
+      var(--bg);
+    min-height:100vh;
+  }
+  strong{color:var(--green);font-weight:600}
+  kbd{
+    background:#0b140d;border:1px solid #2c4230;border-bottom-width:3px;border-radius:5px;
+    padding:1px 7px;font-size:13px;color:#cfe9c6;font-family:ui-monospace,Consolas,monospace;
+  }
+
+  /* ========== Hero（需求①：展示区无边框、无底部提示文字） ========== */
+  .hero{
+    min-height:88vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:70px 20px 60px;overflow:hidden;
+  }
+  .hero h1{font-size:clamp(28px,5vw,46px);letter-spacing:3px;text-shadow:0 4px 0 rgba(0,0,0,.4)}
+  .hero .subtitle{color:var(--muted);margin-top:14px;font-size:clamp(14px,2vw,17px);letter-spacing:1px}
+
+  .cube-stage{width:230px;height:230px;perspective:760px;display:flex;align-items:center;justify-content:center;margin-top:30px;cursor:pointer;}
+  .cube-wrap{transform-style:preserve-3d}
+  .cube-wrap.bounce{animation:bounce .7s cubic-bezier(.36,.07,.19,.97)}
+  @keyframes bounce{
+    0%{transform:translateY(0)}30%{transform:translateY(-46px)}
+    55%{transform:translateY(0) scale(1.04,.96)}75%{transform:translateY(-14px)}100%{transform:translateY(0)}
+  }
+  .cube{width:130px;height:130px;position:relative;transform-style:preserve-3d;animation:spin 14s linear infinite}
+  .cube-stage:hover .cube{animation-play-state:paused}
+  @keyframes spin{from{transform:rotateX(-24deg) rotateY(0)}to{transform:rotateX(-24deg) rotateY(360deg)}}
+  .face{position:absolute;inset:0;backface-visibility:hidden;image-rendering:pixelated}
+  .face.top{
+    transform:rotateX(90deg) translateZ(65px);filter:brightness(1.08);
+    background-color:#67ab2e;
+    background-image:
+      linear-gradient(45deg, rgba(255,255,255,.10) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.10) 75%),
+      linear-gradient(45deg, rgba(0,0,0,.14) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.14) 75%),
+      linear-gradient(#79c73d,#58a425);
+    background-size:26px 26px,26px 26px,100% 100%;
+    background-position:0 0,13px 13px,0 0;
+  }
+  .face.front{transform:rotateY(0deg) translateZ(65px);filter:brightness(.92)}
+  .face.back{transform:rotateY(180deg) translateZ(65px);filter:brightness(.66)}
+  .face.right{transform:rotateY(90deg) translateZ(65px);filter:brightness(.76)}
+  .face.left{transform:rotateY(-90deg) translateZ(65px);filter:brightness(.82)}
+  .face.bottom{
+    transform:rotateX(-90deg) translateZ(65px);filter:brightness(.5);
+    background-color:#8a5f3c;
+    background-image:
+      linear-gradient(45deg, rgba(0,0,0,.15) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.15) 75%),
+      linear-gradient(45deg, rgba(255,255,255,.06) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.06) 75%),
+      linear-gradient(#96683f,#74502f);
+    background-size:26px 26px,26px 26px,100% 100%;
+    background-position:0 0,13px 13px,0 0;
+  }
+  .face.front,.face.back,.face.left,.face.right{
+    background-color:#8a5f3c;
+    background-image:
+      linear-gradient(45deg, rgba(0,0,0,.15) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.15) 75%),
+      linear-gradient(45deg, rgba(255,255,255,.06) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.06) 75%),
+      linear-gradient(#96683f,#74502f);
+    background-size:26px 26px,26px 26px,100% 100%;
+    background-position:0 0,13px 13px,0 0;
+  }
+  .face.front::before,.face.back::before,.face.left::before,.face.right::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:20%;
+    background-color:#67ab2e;
+    background-image:
+      linear-gradient(45deg, rgba(255,255,255,.10) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.10) 75%),
+      linear-gradient(45deg, rgba(0,0,0,.14) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.14) 75%),
+      linear-gradient(#79c73d,#58a425);
+    background-size:26px 26px,26px 26px,100% 100%;
+    background-position:0 0,13px 13px,0 0;
+    box-shadow:0 4px 0 rgba(0,0,0,.22);
+  }
+  .cube-shadow{
+    width:150px;height:24px;border-radius:50%;margin-top:6px;filter:blur(3px);
+    background:radial-gradient(closest-side, rgba(0,0,0,.5), transparent);
+  }
+
+  /* ========== 正文区块 ========== */
+  main{max-width:1100px;margin:0 auto;padding:0 22px}
+  section{padding:64px 0 16px}
+  .sec-head h2{font-size:clamp(22px,3vw,30px);letter-spacing:2px}
+  .sec-sub{color:var(--muted);margin-top:10px;font-size:15px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:30px}
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
+    border:1px solid var(--card-line);border-radius:14px;padding:24px;transition:.25s;
+  }
+  .card:hover{transform:translateY(-4px);border-color:rgba(125,217,87,.45);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+  .tag{
+    display:inline-block;font-size:12px;letter-spacing:1px;color:var(--green);
+    background:rgba(125,217,87,.12);border:1px solid rgba(125,217,87,.3);
+    padding:3px 10px;border-radius:999px;
+  }
+  .card h3{margin:14px 0 10px;font-size:19px}
+  .card p{color:var(--muted);line-height:1.8;font-size:14.5px}
+  .card ul{list-style:none;margin-top:12px}
+  .card li{position:relative;padding-left:18px;margin:8px 0;color:var(--muted);font-size:14px;line-height:1.65}
+  .card li::before{content:"▪";position:absolute;left:0;color:var(--green)}
+
+  /* ========== 领取绿宝石（需求②：图标改为 emerald.png） ========== */
+  .emerald-zone{text-align:center;padding:78px 0 26px}
+  .emerald-btn{
+    display:inline-flex;align-items:center;gap:12px;
+    background:linear-gradient(180deg,#4fbe3a,#2f8f22);color:#fff;
+    font-size:18px;font-weight:700;letter-spacing:2px;font-family:inherit;
+    border:none;border-bottom:5px solid var(--green-deep);border-radius:12px;
+    padding:16px 34px;cursor:pointer;transition:.2s;
+  }
+  .emerald-btn:hover{filter:brightness(1.08);transform:translateY(-2px)}
+  .emerald-btn:active{transform:translateY(2px);border-bottom-width:2px}
+  .emerald-btn img{width:24px;height:24px;image-rendering:pixelated;object-fit:contain}
+  .emerald-note{color:var(--muted);margin-top:14px;font-size:14px}
+  .icon-fallback{font-size:20px;line-height:1}
+
+  .fall-emerald{position:fixed;top:-44px;z-index:999;pointer-events:none;image-rendering:pixelated;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(115vh) rotate(540deg);opacity:.85}}
+
+  /* ========== 互动小工具（需求③④：双模式 + 皮肤展示 + 看看钻石按钮） ========== */
+  .tool{text-align:center;padding:78px 0 40px}
+  .tool-inner{
+    max-width:660px;margin:30px auto 0;text-align:center;
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
+    border:1px solid var(--card-line);border-radius:16px;padding:30px 26px;
+  }
+  .mode-switch{
+    display:inline-flex;gap:4px;padding:4px;margin-bottom:18px;
+    background:#0b140d;border:1px solid var(--card-line);border-radius:12px;
+  }
+  .mode-btn{
+    border:none;background:transparent;color:var(--muted);font-family:inherit;
+    font-size:14px;font-weight:600;padding:9px 18px;border-radius:9px;cursor:pointer;transition:.2s;
+  }
+  .mode-btn.active{
+    background:linear-gradient(180deg,#4fbe3a,#2f8f22);color:#fff;box-shadow:0 3px 0 var(--green-deep);
+  }
+  .query-row{display:flex;gap:10px;margin-top:4px}
+  #queryInput{
+    flex:1;background:#0b140d;border:1px solid #2c4230;border-radius:10px;
+    padding:13px 14px;color:var(--text);font-size:15px;outline:none;font-family:inherit;min-width:0;
+  }
+  #queryInput:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(125,217,87,.15)}
+  #queryBtn{
+    background:linear-gradient(180deg,#4fbe3a,#2f8f22);color:#fff;font-family:inherit;
+    border:none;border-bottom:4px solid var(--green-deep);border-radius:10px;
+    padding:0 26px;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap;
+  }
+  #queryBtn:disabled{opacity:.6;cursor:wait}
+  .tool-hint{color:var(--muted);font-size:12.5px;margin-top:12px}
+  .tool-msg{min-height:20px;font-size:14px;margin-top:12px;color:#ff9d9d}
+  .tool-msg.ok{color:var(--green)}
+
+  .result{
+    display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;
+    text-align:left;background:#0b140d;border:1px solid var(--card-line);
+    border-radius:14px;padding:18px 22px;margin-top:16px;
+  }
+  .result[hidden]{display:none}
+  .skin{height:170px;image-rendering:pixelated}
+  .result-info{display:flex;flex-direction:column;gap:10px;min-width:0;text-align:left}
+  .result-label{font-size:12px;color:var(--muted);letter-spacing:1px}
+  .result-value{font-size:17px;font-weight:700;color:#fff;word-break:break-all}
+  .result-value.uuid{color:var(--green);font-size:14px;font-family:ui-monospace,Consolas,monospace}
+
+  .diamond-btn{
+    display:inline-flex;align-items:center;gap:10px;margin-top:26px;
+    background:linear-gradient(180deg,#bfe9f7,#8fd4ef);color:#0b4f6c;
+    border:none;border-bottom:4px solid #5fa8c9;border-radius:12px;
+    padding:13px 28px;font-size:16px;font-weight:800;letter-spacing:1px;
+    text-decoration:none;cursor:pointer;transition:.2s;font-family:inherit;
+  }
+  .diamond-btn:hover{filter:brightness(1.06);transform:translateY(-2px);box-shadow:0 8px 20px rgba(120,200,235,.25)}
+  .diamond-btn:active{transform:translateY(1px);border-bottom-width:2px}
+  .diamond-btn img{width:22px;height:22px;image-rendering:pixelated;object-fit:contain}
+
+  footer{
+    text-align:center;color:var(--muted);font-size:12.5px;
+    padding:40px 20px 50px;border-top:1px solid rgba(255,255,255,.06);margin-top:30px;
+  }
+
+  @media (max-width:560px){
+    .query-row{flex-direction:column}
+    #queryBtn{padding:13px 26px}
+    .result{flex-direction:column;text-align:center}
+    .result-info{text-align:center}
+  }
+</style>
+</head>
+<body>
+
+  <!-- Hero：草方块展示区（需求①：无边框；底部提示文字已取消） -->
+  <header class="hero">
+    <h1>Minecraft 新手指引</h1>
+    <p class="subtitle">从一个方块开始，建造属于你的世界</p>
+    <div class="cube-stage" id="cubeStage" title="点我一下试试">
+      <div class="cube-wrap" id="cubeWrap">
+        <div class="cube">
+          <div class="face top"></div>
+          <div class="face bottom"></div>
+          <div class="face front"></div>
+          <div class="face back"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+        </div>
+      </div>
+    </div>
+    <div class="cube-shadow"></div>
+  </header>
+
+  <main>
+    <!-- Minecraft 介绍 -->
+    <section id="intro">
+      <div class="sec-head">
+        <h2>Minecraft 介绍</h2>
+        <p class="sec-sub">三个关键词，认识这块方块的世界</p>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <span class="tag">01 · 基本信息</span>
+          <h3>什么是 Minecraft？</h3>
+          <p>一款由方块构成的第一人称沙盒游戏。玩家可以在随机生成的世界里采集、建造、合成、冒险，没有固定目标，玩法规则由你定义。</p>
+          <ul>
+            <li>首发年份：2009（公测），2011（正式版 1.0）</li>
+            <li>核心玩法：生存、创造、极限、多人联机</li>
+            <li>两大版本：Java 版（PC 生态最丰富）与基岩版（跨平台）</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag">02 · 创始者</span>
+          <h3>Notch 与 Mojang</h3>
+          <p>瑞典程序员 <strong>Markus "Notch" Persson</strong> 于 2009 年发布了 Minecraft 的第一个公开版本，并随后创立工作室 Mojang（瑞典语"魔法盒"）。</p>
+          <ul>
+            <li>2014 年 Notch 将 Mojang 以约 25 亿美元出售给微软后离场</li>
+            <li>如今由 Mojang Studios（微软旗下）持续维护更新</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag">03 · 现状</span>
+          <h3>十余年热度不减</h3>
+          <p>Minecraft 是全球销量最高的电子游戏之一，累计销量超过 3 亿份，每月活跃玩家数以千万计。</p>
+          <ul>
+            <li>每年仍有大型版本更新（如"洞穴与高山""幽匿与诡异"）</li>
+            <li>拥有活跃的模组、材质、地图、服务器创作者生态</li>
+            <li>衍生作品包括 Minecraft Dungeons、Minecraft Legends 等</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Minecraft 下载方式 -->
+    <section id="download">
+      <div class="sec-head">
+        <h2>Minecraft 下载方式</h2>
+        <p class="sec-sub">选一款启动器，把游戏装进电脑</p>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <span class="tag">01 · 官方启动器</span>
+          <h3>Minecraft Launcher</h3>
+          <p>由 Mojang / 微软官方提供，支持正版账号登录，可下载 Java 版与基岩版，整合了版本管理、皮肤更换与市场内容。</p>
+          <ul>
+            <li>优点：稳定、正版验证、直接购买/切换版本</li>
+            <li>适合：已有正版账号、追求原汁原味的玩家</li>
+            <li>获取：Minecraft 官网 minecraft.net 或微软商店</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag">02 · PCL2</span>
+          <h3>Plain Craft Launcher 2</h3>
+          <p>国内玩家 <strong>龙腾猫跃（LTCatt）</strong> 开发的开源启动器，界面现代、上手极快，支持版本隔离、模组/整合包一键安装、崩溃自动分析。</p>
+          <ul>
+            <li>仅支持 Windows（依赖 .NET Framework 4.5+）</li>
+            <li>内置国内加速下载，新手首选</li>
+            <li>获取：官方爱发电或 GitHub（Meloong-Git/PCL）</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag">03 · HMCL</span>
+          <h3>Hello Minecraft! Launcher</h3>
+          <p>由开发者 <strong>黄雨辉</strong> 等维护的开源老牌启动器，用 Java 编写，<strong>天然跨平台</strong>（Windows / macOS / Linux）。</p>
+          <ul>
+            <li>支持的加载器最全：Forge、Fabric、Quilt、NeoForge、OptiFine、LiteLoader</li>
+            <li>整合包生态最强，可导入 CurseForge / Modrinth / MultiMC</li>
+            <li>适合：跨平台玩家、整合包与进阶模组玩家</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Minecraft 新手教程 -->
+    <section id="tutorial">
+      <div class="sec-head">
+        <h2>Minecraft 新手教程</h2>
+        <p class="sec-sub">第一天该做什么？记住这三步</p>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <span class="tag">第一步</span>
+          <h3>撸树 · 合成 · 工具</h3>
+          <p>出生后第一件事：长按左键对准树干采集原木。按 <kbd>E</kbd> 打开背包，将原木变成木板，四块木板拼成<strong>工作台</strong>。</p>
+          <ul>
+            <li>木板 → 木棍 → 木镐 → 石镐</li>
+            <li>依次升级：木 → 石 → 铁 → 钻石 → 下界合金</li>
+            <li>前 10 分钟优先做出：镐、斧、剑、火把</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag">第二步</span>
+          <h3>安家 · 火把 · 床</h3>
+          <p>天黑会刷怪。在日落前用泥土/木板围一个小庇护所，插上火把（煤 + 木棍）照明，用三只羊的羊毛 + 三块木板做一张<strong>床</strong>。</p>
+          <ul>
+            <li>床可以跳过黑夜，并在死亡后作为重生点</li>
+            <li>门口放一扇门、留一个 1×1 的窗观察怪物</li>
+            <li>苦力怕爆炸是新手最常见的死因——小心绿色的家伙</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag">第三步</span>
+          <h3>挖矿 · 附魔 · 冒险</h3>
+          <p>往地下挖到 Y=-58 附近找<strong>钻石</strong>（1.18+ 版本），用铁镐开采。集齐装备后可以下地狱、进入末地挑战末影龙。</p>
+          <ul>
+            <li>附魔台（书 + 钻石×2 + 黑曜石×4）强化装备</li>
+            <li>铁傀儡 / 村民交易能快速获得资源</li>
+            <li>进阶：红石自动化、建筑、整合包、服务器</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 领取绿宝石（需求②：图标由 💎 改为 emerald.png） -->
+    <section class="emerald-zone">
+      <button class="emerald-btn" id="emeraldBtn">
+        <img id="emeraldIcon" src="emerald.png" alt="绿宝石" onerror="fallbackIcon(this,'💚')">
+        领取绿宝石
+      </button>
+      <p class="emerald-note">点一下，天上会掉绿宝石哦</p>
+    </section>
+
+    <!-- 互动小工具（需求③：模式可切换，两种模式均展示皮肤；需求④：浅蓝色"看看钻石？"按钮） -->
+    <section class="tool" id="tool">
+      <div class="sec-head" style="text-align:center">
+        <h2>互动小工具</h2>
+        <p class="sec-sub">输入正版玩家名或 UUID，看看这个玩家的皮肤和名字</p>
+      </div>
+      <div class="tool-inner">
+        <div class="mode-switch" id="modeSwitch">
+          <button class="mode-btn active" data-mode="name2uuid" type="button">玩家名转UUID</button>
+          <button class="mode-btn" data-mode="uuid2name" type="button">UUID转玩家名</button>
+        </div>
+        <div class="query-row">
+          <input id="queryInput" type="text" placeholder="输入玩家名，如 Notch" autocomplete="off">
+          <button id="queryBtn" type="button">查询</button>
+        </div>
+        <p class="tool-hint" id="toolHint">输入 3–16 位正版玩家名（字母、数字、下划线），如 Notch</p>
+        <p class="tool-msg" id="toolMsg"></p>
+        <div class="result" id="result" hidden>
+          <img id="skinImg" class="skin" alt="玩家皮肤">
+          <div class="result-info">
+            <div>
+              <div class="result-label">玩家名</div>
+              <div class="result-value" id="nameValue">—</div>
+            </div>
+            <div>
+              <div class="result-label">UUID</div>
+              <div class="result-value uuid" id="uuidValue">—</div>
+            </div>
+          </div>
+        </div>
+        <a class="diamond-btn" href="diamond.html">
+          <img src="diamond.png" alt="钻石" onerror="fallbackIcon(this,'💎')">
+          看看钻石？
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>本页面仅作学习演示 · 皮肤数据来自 Crafatar · 用户名数据来自 PlayerDB</footer>
+
+<script>
+  /* ========== 通用：图片缺失时回退为 emoji ========== */
+  var emeraldOK = true;
+  function fallbackIcon(img, emoji){
+    if(img.id === 'emeraldIcon') emeraldOK = false;
+    var s = document.createElement('span');
+    s.className = 'icon-fallback';
+    s.textContent = emoji;
+    img.replaceWith(s);
+  }
+
+  /* ========== 草方块交互：悬停暂停、点击弹跳 ========== */
+  var stage = document.getElementById('cubeStage');
+  var wrap  = document.getElementById('cubeWrap');
+  stage.addEventListener('click', function(){
+    wrap.classList.remove('bounce');
+    void wrap.offsetWidth; /* 重置动画 */
+    wrap.classList.add('bounce');
+  });
+  wrap.addEventListener('animationend', function(){ wrap.classList.remove('bounce'); });
+
+  /* ========== 领取绿宝石：天上掉 emerald.png ========== */
+  document.getElementById('emeraldBtn').addEventListener('click', function(){
+    var n = 14 + Math.floor(Math.random() * 8);
+    for(var i = 0; i < n; i++){
+      var size = 16 + Math.random() * 20;
+      var el;
+      if(emeraldOK){
+        el = document.createElement('img');
+        el.src = 'emerald.png';
+        el.alt = '';
+        el.style.width = size + 'px';
+      }else{
+        el = document.createElement('span');
+        el.textContent = '💚';
+        el.style.fontSize = size + 'px';
+      }
+      el.className = 'fall-emerald';
+      el.style.left = (Math.random() * 100) + 'vw';
+      el.style.animationDuration = (1.6 + Math.random() * 2.4) + 's';
+      el.style.animationDelay = (Math.random() * 0.8) + 's';
+      el.addEventListener('animationend', function(){ this.remove(); });
+      document.body.appendChild(el);
+    }
+  });
+
+  /* ========== 互动小工具：双模式查询（数据来自 PlayerDB，皮肤来自 Crafatar） ========== */
+  var mode      = 'name2uuid';
+  var modeBtns  = document.querySelectorAll('.mode-btn');
+  var inputEl   = document.getElementById('queryInput');
+  var hintEl    = document.getElementById('toolHint');
+  var msgEl     = document.getElementById('toolMsg');
+  var resultEl  = document.getElementById('result');
+  var skinImg   = document.getElementById('skinImg');
+  var nameVal   = document.getElementById('nameValue');
+  var uuidVal   = document.getElementById('uuidValue');
+  var queryBtn  = document.getElementById('queryBtn');
+
+  var HINTS = {
+    name2uuid: '输入 3–16 位正版玩家名（字母、数字、下划线），如 Notch',
+    uuid2name: '输入正版 UUID（带或不带连字符均可，32 位十六进制）'
+  };
+  var PLACEHOLDERS = {
+    name2uuid: '输入玩家名，如 Notch',
+    uuid2name: '输入 UUID，如 069a79f444e94726a5befca90e38aaf5'
+  };
+
+  modeBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(btn.dataset.mode === mode) return;
+      mode = btn.dataset.mode;
+      modeBtns.forEach(function(b){ b.classList.toggle('active', b === btn); });
+      inputEl.value = '';
+      inputEl.placeholder = PLACEHOLDERS[mode];
+      hintEl.textContent = HINTS[mode];
+      showMsg('');
+      resultEl.hidden = true;
+    });
+  });
+
+  function stripDash(s){ return s.replace(/[^0-9a-fA-F]/g, ''); }
+  function isName(v){ return /^[A-Za-z0-9_]{3,16}$/.test(v); }
+  function isUuid(v){ return /^[0-9a-fA-F]{32}$/.test(stripDash(v)); }
+  function dashed(u){
+    return u.replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, '$1-$2-$3-$4-$5');
+  }
+  function showMsg(text, ok){
+    msgEl.textContent = text || '';
+    msgEl.classList.toggle('ok', !!ok);
+  }
+
+  async function doQuery(){
+    var v = inputEl.value.trim();
+    if(!v){ showMsg('请先输入内容哦'); inputEl.focus(); return; }
+    if(mode === 'name2uuid' && !isName(v)){
+      showMsg('玩家名格式不对：应为 3–16 位字母、数字或下划线'); return;
+    }
+    if(mode === 'uuid2name' && !isUuid(v)){
+      showMsg('UUID 格式不对：应为 32 位十六进制（连字符可有可无）'); return;
+    }
+
+    queryBtn.disabled = true;
+    queryBtn.textContent = '查询中…';
+    resultEl.hidden = true;
+    showMsg('');
+
+    try{
+      var q = (mode === 'uuid2name')
+        ? dashed(stripDash(v).toLowerCase())
+        : v;
+      var res  = await fetch('https://playerdb.co/api/player/minecraft/' + encodeURIComponent(q));
+      var json = await res.json().catch(function(){ return null; });
+
+      if(json && json.code === 'player.found' && json.data && json.data.player){
+        var p    = json.data.player;
+        var uuid = stripDash(p.id || '').toLowerCase();
+
+        nameVal.textContent = p.username || '—';
+        uuidVal.textContent = dashed(uuid) || '—';
+        skinImg.src = 'https://crafatar.com/renders/body/' + uuid + '?overlay';
+        skinImg.alt = (p.username || '玩家') + ' 的皮肤';
+        resultEl.hidden = false;
+        showMsg(mode === 'name2uuid'
+          ? '查询成功！这是 TA 的 UUID 和皮肤'
+          : '查询成功！这是 TA 的玩家名和皮肤', true);
+      }else{
+        showMsg('没有找到该玩家，请确认输入的是正版玩家名 / UUID');
+      }
+    }catch(e){
+      showMsg('查询失败：网络异常或接口暂不可用，请稍后再试');
+    }finally{
+      queryBtn.disabled = false;
+      queryBtn.textContent = '查询';
+    }
+  }
+
+  queryBtn.addEventListener('click', doQuery);
+  inputEl.addEventListener('keydown', function(e){
+    if(e.key === 'Enter') doQuery();
+  });
+</script>
+</body>
+</html>
